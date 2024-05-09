@@ -57,7 +57,7 @@ class camera
 	void initialize()
 	{
 		// Calculate the image height, and ensure that it's at least 1.
-		image_height = int(image_width / aspect_ratio);
+		image_height = static_cast<int>(image_width / aspect_ratio);
 		image_height = (image_height < 1) ? 1 : image_height;
 
 		pixel_samples_scale = 1.0 / samples_per_pixel;
@@ -68,7 +68,7 @@ class camera
 		auto theta = degrees_to_radians(vFov);
 		auto h = tan(theta / 2);
 		auto viewport_height = 2 * h * focus_dist;
-		auto viewport_width = viewport_height * (double(image_width) / image_height);
+		auto viewport_width = viewport_height * (static_cast<double>(image_width) / image_height);
 
 		// Calculate the u, v, w unit basis vectors for the camera coordinate frame.
 		w = unit_vector(lookFrom - lookAt);
@@ -93,23 +93,24 @@ class camera
 		defocus_disk_v = v * defocus_radius;
 	}
 
-	ray get_ray(int i, int j) const
+	ray get_ray(const int i, const int j) const
 	{
 		// Construct a camera ray originating from the defocus disk and directed at a randomly
 		// sampled point around the pixel location i, j.
 
-		auto offset = sample_square();
-		auto pixel_sample = pixel100_loc
+		const auto offset = sample_square();
+		const auto pixel_sample = pixel100_loc
 							+ ((i + offset.x()) * pixel_delta_u)
 							+ ((j + offset.y()) * pixel_delta_v);
 
-		auto ray_origin = (defocus_angle <= 0) ? center : defocus_disk_sample();
-		auto ray_direction = pixel_sample - ray_origin;
+		const auto ray_origin = (defocus_angle <= 0) ? center : defocus_disk_sample();
+		const auto ray_direction = pixel_sample - ray_origin;
+		const auto ray_time = random_double();
 
-		return ray(ray_origin, ray_direction);
+		return {ray_origin, ray_direction, ray_time};
 	}
 
-	vec3 sample_square() const
+	static vec3 sample_square()
 	{
 		// Returns the vector to a random point in the [-.5, -.5] - [+.5, +.5] unit square.
 		return { random_double() - 0.5, random_double() - 0.5, 0 };
@@ -128,9 +129,8 @@ class camera
 		if (depth <= 0)
 			return { 0, 0, 0 };
 
-		hit_record rec;
-
-		if (world.hit(r, interval(0.001, infinity), rec))
+		if (hit_record rec;
+			world.hit(r, interval(0.001, infinity), rec))
 		{
 			ray scattered;
 			color attenuation;
