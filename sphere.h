@@ -12,12 +12,20 @@ class sphere :
 	// Stationary Sphere
 	sphere(const point3& center, double radius, shared_ptr<material> mat)
 		: center1(center), radius(fmax(0, radius)), mat(std::move(mat)), is_moving(false)
-	{}
+	{
+		auto radii_vec = vec3(radius, radius, radius);
+		bbox = aabb(center1 - radii_vec, center1 + radii_vec);
+	}
 
-	// Moving Shpere
+	// Moving Sphere
 	sphere(const point3& center1, const point3& center2, double radius, shared_ptr<material> mat)
 		: center1(center1), radius(fmax(0, radius)), mat(std::move(mat)), is_moving(true)
 	{
+		auto radii_vec = vec3(radius, radius, radius);
+		aabb box1(center1 - radii_vec, center1 + radii_vec);
+		aabb box2(center2 - radii_vec, center2 + radii_vec);
+		bbox = aabb(box1, box2);
+
 		center_vec = center2 - center1;
 	}
 
@@ -57,14 +65,21 @@ class sphere :
 		return true;
 	}
 
+	aabb bounding_box() const override
+	{
+		return bbox;
+	}
+
  private:
 	point3 center1;
 	double radius;
 	shared_ptr<material> mat;
 	bool is_moving{};
 	vec3 center_vec;
+	aabb bbox;
 
-	point3 sphere_center(const double time) const {
+	point3 sphere_center(const double time) const
+	{
 		// Linearly interpolate from center1 to center2 according to time, where t=0 yields
 		// center1, and t=1 yields center2
 		return center1 + (time * center_vec);
