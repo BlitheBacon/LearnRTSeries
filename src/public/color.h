@@ -6,13 +6,13 @@
 
 using color = vec3;
 
-inline double linear_to_gamma(double linear_component)
+inline double linear_to_gamma(const double linear_component)
 {
     if (linear_component > 0) { return sqrt(linear_component); }
     return 0;
 }
 
-void write_color(std::ostream &out, const color &pixel_color)
+inline void write_color(std::ostream &out, const color &pixel_color)
 {
     // Converting RGB values from linear to gamma space
     auto r = pixel_color.x();
@@ -26,9 +26,9 @@ void write_color(std::ostream &out, const color &pixel_color)
 
     // Translate the [0,1] component values to the byte range [0,255].
     static const interval intensity(0.000, 0.999);
-    int                   rbyte = int(256 * intensity.clamp(r));
-    int                   gbyte = int(256 * intensity.clamp(g));
-    int                   bbyte = int(256 * intensity.clamp(b));
+    const int             rbyte = static_cast<int>(256 * intensity.clamp(r));
+    const int             gbyte = static_cast<int>(256 * intensity.clamp(g));
+    const int             bbyte = static_cast<int>(256 * intensity.clamp(b));
 
     // Write out the pixel color components.
     out << rbyte << ' ' << gbyte << ' ' << bbyte << '\n';

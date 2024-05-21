@@ -11,7 +11,7 @@ public:
         : min(+infinity),
           max(-infinity) {}
 
-    interval(double min, double max)
+    interval(const double min, const double max)
         : min(min),
           max(max) {}
 
@@ -24,11 +24,11 @@ public:
 
     double size() const { return max - min; }
 
-    bool contains(double x) const { return min <= x && x <= max; }
+    bool contains(const double x) const { return min <= x && x <= max; }
 
-    bool surrounds(double x) const { return min < x && x < max; }
+    bool surrounds(const double x) const { return min < x && x < max; }
 
-    double clamp(double x) const
+    double clamp(const double x) const
     {
         if (x < min) return min;
         if (x > max) return max;
@@ -36,9 +36,9 @@ public:
     }
 
     // Pads the interval by a given delta.
-    interval expand(double delta) const
+    interval expand(const double delta) const
     {
-        auto padding = delta / 2;
+        const auto padding = delta / 2;
         return {min - padding, max + padding};
     }
 

@@ -1,5 +1,5 @@
-#ifndef RAYTRACINGINONEWEEKEND_RAY_H
-#define RAYTRACINGINONEWEEKEND_RAY_H
+#ifndef RAY_H
+#define RAY_H
 
 #include "vec3.h"
 
@@ -13,7 +13,7 @@ public:
           dir(direction),
           tm(0) {}
 
-    ray(const point3 &origin, const vec3 &direction, double time)
+    ray(const point3 &origin, const vec3 &direction, const double time)
         : orig(origin),
           dir(direction),
           tm(time) {}
@@ -22,7 +22,7 @@ public:
 
     const point3 &direction() const { return dir; }
 
-    point3 at(double t) const { return orig + t * dir; }
+    point3 at(const double t) const { return orig + (t * dir); }
 
     double time() const { return tm; }
 

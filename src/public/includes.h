@@ -19,7 +19,7 @@ const double     infinity = std::numeric_limits<double>::infinity();
 constexpr double pi       = 3.1415926535897932385;
 
 // Utility Functions
-inline double degrees_to_radians(double degrees) { return degrees * pi / 180; }
+inline double degrees_to_radians(const double degrees) { return degrees * pi / 180; }
 
 inline double random_double()
 {
@@ -29,13 +29,13 @@ inline double random_double()
     return distribution(generator);
 }
 
-inline double random_double(double min, double max)
+inline double random_double(const double min, const double max)
 {
     // Returns a random real number in [min, max).
     return (min + (max - min) * random_double());
 }
 
-inline int random_int(int min, int max)
+inline int random_int(const int min, const int max)
 {
     // Return a random integer in [min, max].
     return static_cast<int>(random_double(min, max + 1));

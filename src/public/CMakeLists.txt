@@ -1,0 +1,16 @@
+SET(TARGET_H
+        aabb.h
+        bvh.h
+        camera.h
+        color.h
+        header.h
+        hittable.h
+        hittable_list.h
+        includes.h
+        interval.h
+        material.h
+        ray.h
+        rtw_stb_image.h
+        sphere.h
+        texture.h
+        vec3.h)

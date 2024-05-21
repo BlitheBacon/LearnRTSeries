@@ -7,7 +7,7 @@
 #include "aabb.h"
 #include "hittable.h"
 
-class hittable_list : public hittable
+class hittable_list final : public hittable
 {
 public:
     std::vector<shared_ptr<hittable> > objects;
@@ -24,7 +24,7 @@ public:
         bbox = aabb(bbox, object->bounding_box());
     }
 
-    bool hit(const ray &r, interval ray_t, hit_record &rec) const override
+    bool hit(const ray &r, const interval ray_t, hit_record &rec) const override
     {
         hit_record temp_rec;
         bool       hit_anything   = false;
